@@ -45,8 +45,8 @@ tasks {
 group = "com.lucasbais.android"
 version = "0.0.1"
 
-val bintrayUser: String = System.getenv("BINTRAY_USER")
-val bintrayApiKey: String = System.getenv("BINTRAY_API_KEY")
+val bintrayUser: String? = System.getenv("BINTRAY_USER")
+val bintrayApiKey: String? = System.getenv("BINTRAY_API_KEY")
 
 tasks {
     val sourcesJar by creating(Jar::class) {
