@@ -15,6 +15,9 @@ before_cache:
 branches:
   only:
     - master
-  script:
-    - ./gradlew assemble
-    - ./gradlew bintrayUpload
+    - /^deploy-.*$/
+    - /^feature-.*$/
+    - /^fix-.*$/
+script:
+  - ./gradlew assemble
+  - ./gradlew bintrayUpload

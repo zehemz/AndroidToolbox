@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/zehemz/AndroidToolbox.svg?branch=master)](https://travis-ci.org/zehemz/AndroidToolbox)
+
 # AndroidToolbox
 
 AndroidToolbox is a gradle plugin that helps you to start projects in seconds.
