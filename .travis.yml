@@ -21,3 +21,14 @@ branches:
 script:
   - ./gradlew assemble
   - ./gradlew bintrayUpload
+before_deploy:
+  # Set up git user name and tag this commit
+  - git config --local user.name "Lucas Bais"
+  - git config --local user.email "lucas.bais@gmail.com"
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+  - git tag $TRAVIS_TAG
+deploy:
+  provider: releases
+  api_key:
+    secure: "U0dUCBiCsCVUy528u25Sn4z3KiqUfDVYUa8dCoc5PX+LpoSdJUpfhADeuM092BnauseCQ24cjEqa1o5/5wNgdWMyoG8JzkgfvRgp3qlLPgMAIc5qwLamj4/Z2bHPFQP1XlnTfwVqAXlWcp/ZoaiwG9ypjWwNW6+Kj0MWxts9zgMQ8h+dxwXE9C3IsXl1paoapIWA4amEc7MdGbFk5j1VV9aM//pge/877cbmqibObVtBMvYsjw03g9t65k0zUdvvIZCDKnkfg/t9cwP8pU1ndzRY3e+l89SNX7dGb6RyAAarHmGkEEUU9eqOxkoQ8/9sfyQgP8HnkT32h3FciQNh62bSETCB3xT2mI3TByPCNem7jZa2UgebndseGqZWf44CDOGQwmo5MB3ck/7T//hYZaEltEraS+KBySXXApGZOoFUZvyUoscO4onKi5dOzztFpvTH/3ICuaJsbYnuE36+Ozeef1ah2oCqKEsMB8YHgRMCjgSlFGxD2UWLtAy2ASU7ctxgdCAiJOsSZDURoPZkoJ44KX3DoOSny3IYp913EQI31+RVMd7WD6RImXRA3g+WEFRz0CVThsM+Q4kNpArWjI9zqItw21rSz+kQigBWf6YKBMvl9SvCmXK/q8D0GggWRyD2OzWNcGaZoVQHVT5VuOBUk25bdqtM1E3x/ON5GKc="
+  skip_cleanup: true

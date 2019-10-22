@@ -66,6 +66,7 @@ publishing {
             groupId = project.group.toString()
             artifactId = "AndroidToolbox"
             version = project.version.toString()
+            from(components["java"])
         }
     }
 }
@@ -75,8 +76,6 @@ bintray {
     key = bintrayApiKey
     publish = true
     override = true
-
-
 
     pkg.apply {
         repo = "android"
