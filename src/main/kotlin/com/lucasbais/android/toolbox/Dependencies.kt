@@ -17,6 +17,8 @@ val constraintLayout = GradleDependency("androidx.constraintlayout", "constraint
 val coreUtils = GradleDependency("androidx.legacy", "legacy-support-core-utils", supportVersion)
 val fragment = GradleDependency("androidx.fragment", "fragment", "1.1.0")
 val fragmentKtx = GradleDependency("androidx.fragment", "fragment-ktx", "1.1.0")
+val navigationFragment = GradleDependency("androidx.navigation", "navigation-fragment-ktx", "2.2.1")
+val navigationUI = GradleDependency("androidx.navigation", "navigation-ui-ktx", "2.2.1")
 
 // Room database
 const val roomVersion = "2.1.0"
@@ -26,7 +28,7 @@ val roomTesting = GradleDependency("androidx.room", "room-testing", roomVersion)
 val roomRxJava2 = GradleDependency("androidx.room", "room-rxjava2", roomVersion)
 
 
-// Dagger
+// di
 const val daggerVersion = "2.16"
 val daggerRuntime = GradleDependency("com.google.dagger", "dagger", daggerVersion)
 val daggerAndroid = GradleDependency("com.google.dagger", "dagger-android", daggerVersion)
@@ -41,29 +43,34 @@ val lifecycleJava8 = GradleDependency("androidx.lifecycle", "lifecycle-common-ja
 val lifecycleCompiler = GradleDependency("androidx.lifecycle", "lifecycle-compiler", lifecycleVersion)
 val lifecycleViewModelKtx =
         GradleDependency("androidx.lifecycle", "lifecycle-viewmodel-ktx", lifecycleVersion)
+val lifecycleExtension = GradleDependency("androidx.lifecycle", "lifecycle-extensions", "2.2.0")
 
-const val retrofitVersion = "2.3.0"
+const val retrofitVersion = "2.7.1"
 val retrofitRuntime = GradleDependency("com.squareup.retrofit2", "retrofit", retrofitVersion)
 val retrofitGsonConverter = GradleDependency("com.squareup.retrofit2", "converter-gson", retrofitVersion)
+val okHttp = GradleDependency("com.squareup.okhttp3", "okhttp", "4.3.1")
+val mockServer = GradleDependency("com.squareup.okhttp3", "mockwebserver", "4.3.1")
+val okHttpLoggingInterceptor = GradleDependency("com.squareup.okhttp3", "logging-interceptor", "4.3.1")
+val moshi = GradleDependency("com.squareup.moshi", "moshi-kotlin", "1.9.2")
 
-// glide image load
+//Image
 val glideRuntime = GradleDependency("com.github.bumptech.glide", "glide", "4.8.0")
 val glideCompiler = GradleDependency("com.github.bumptech.glide", "compiler", "4.8.0")
 
 
 enum class RecommendedAndroidDependencies : GradleDependencyProvider {
 
-    KOTLIN {
-        override fun recommendedGradleDependencyList(): List<GradleDependency> {
-            return listOf(
+    LANGUAGE {
+        override fun recommendedGradleDependencyList(): Set<GradleDependency> {
+            return setOf(
                     kotlinStd,
                     ktx
             )
         }
     },
-    ANDROID_SUPPORT {
-        override fun recommendedGradleDependencyList(): List<GradleDependency> {
-            return listOf(
+    UI {
+        override fun recommendedGradleDependencyList(): Set<GradleDependency> {
+            return setOf(
                     annotation,
                     appCompat,
                     recyclerView,
@@ -72,12 +79,14 @@ enum class RecommendedAndroidDependencies : GradleDependencyProvider {
                     constraintLayout,
                     fragment,
                     fragmentKtx,
-                    coreUtils
+                    coreUtils,
+                    navigationFragment,
+                    navigationUI
             )
         }
 
-        override fun recommendedTestGradleDependencyList(): List<GradleDependency> {
-            return listOf(
+        override fun recommendedTestGradleDependencyList(): Set<GradleDependency> {
+            return setOf(
                     appCompat,
                     recyclerView,
                     cardView,
@@ -85,78 +94,85 @@ enum class RecommendedAndroidDependencies : GradleDependencyProvider {
             )
         }
     },
-    ROOM {
-        override fun recommendedGradleDependencyList(): List<GradleDependency> {
-            return listOf(
+    DATABASE {
+        override fun recommendedGradleDependencyList(): Set<GradleDependency> {
+            return setOf(
                     roomRuntime,
                     roomRxJava2
             )
         }
 
-        override fun recommendedKaptGradleDependencyList(): List<GradleDependency> {
-            return listOf(
+        override fun recommendedKaptGradleDependencyList(): Set<GradleDependency> {
+            return setOf(
                     roomCompiler
             )
         }
 
-        override fun recommendedTestGradleDependencyList(): List<GradleDependency> {
-            return listOf(
+        override fun recommendedTestGradleDependencyList(): Set<GradleDependency> {
+            return setOf(
                     roomTesting
             )
         }
     },
-    DAGGER {
-        override fun recommendedGradleDependencyList(): List<GradleDependency> {
-            return listOf(
+    DI {
+        override fun recommendedGradleDependencyList(): Set<GradleDependency> {
+            return setOf(
                     daggerRuntime,
                     daggerAndroid,
                     daggerAndroidSupport
             )
         }
 
-        override fun recommendedKaptGradleDependencyList(): List<GradleDependency> {
-            return listOf(
+        override fun recommendedKaptGradleDependencyList(): Set<GradleDependency> {
+            return setOf(
                     daggerCompiler,
                     daggerAndroidSupportCompiler
             )
         }
 
     },
-    GLIDE {
-        override fun recommendedGradleDependencyList(): List<GradleDependency> {
-            return listOf(glideRuntime)
+    IMAGES {
+        override fun recommendedGradleDependencyList(): Set<GradleDependency> {
+            return setOf(glideRuntime)
         }
 
-        override fun recommendedKaptGradleDependencyList(): List<GradleDependency> {
-            return listOf(glideCompiler)
+        override fun recommendedKaptGradleDependencyList(): Set<GradleDependency> {
+            return setOf(glideCompiler)
         }
     },
-    LIFECYCLE {
-        override fun recommendedGradleDependencyList(): List<GradleDependency> {
-            return listOf(
+    ARCHITECTURE {
+        override fun recommendedGradleDependencyList(): Set<GradleDependency> {
+            return setOf(
                     lifecycleRuntime,
                     lifecycleJava8,
-                    lifecycleViewModelKtx
+                    lifecycleViewModelKtx,
+                    lifecycleExtension
             )
-
         }
 
-        override fun recommendedKaptGradleDependencyList(): List<GradleDependency> {
-            return listOf(lifecycleCompiler)
+        override fun recommendedKaptGradleDependencyList(): Set<GradleDependency> {
+            return setOf(lifecycleCompiler)
         }
 
     },
-    RETROFIT {
-        override fun recommendedGradleDependencyList(): List<GradleDependency> {
-            return listOf(
+    NETWORK {
+        override fun recommendedGradleDependencyList(): Set<GradleDependency> {
+            return setOf(
                     retrofitRuntime,
-                    retrofitGsonConverter
+                    retrofitGsonConverter,
+                    okHttp,
+                    okHttpLoggingInterceptor,
+                    moshi
             )
         }
+
+        override fun recommendedTestGradleDependencyList(): Set<GradleDependency> {
+            return setOf(mockServer)
+        }
     },
-    TIMBER {
-        override fun recommendedGradleDependencyList(): List<GradleDependency> {
-            return listOf(GradleDependency("com.jakewharton.timber", "timber", "4.5.1"))
+    LOGS {
+        override fun recommendedGradleDependencyList(): Set<GradleDependency> {
+            return setOf(GradleDependency("com.jakewharton.timber", "timber", "4.5.1"))
         }
     }
 }

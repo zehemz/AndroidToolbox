@@ -2,21 +2,21 @@ package com.lucasbais.android.toolbox
 
 interface GradleDependencyProvider {
 
-    fun recommendedGradleDependencyList(): List<GradleDependency>
+    fun recommendedGradleDependencyList(): Set<GradleDependency>
 
-    fun recommendedTestGradleDependencyList(): List<GradleDependency> {
-        return emptyList()
+    fun recommendedTestGradleDependencyList(): Set<GradleDependency> {
+        return emptySet()
     }
 
-    fun recommendedAndroidTestGradleDependencyList() : List<GradleDependency> {
-        return emptyList()
+    fun recommendedAndroidTestGradleDependencyList(): Set<GradleDependency> {
+        return emptySet()
     }
 
-    fun recommendedKaptGradleDependencyList(): List<GradleDependency> {
-        return emptyList()
+    fun recommendedKaptGradleDependencyList(): Set<GradleDependency> {
+        return emptySet()
     }
 
-    fun recommendedAptGradleDependencyList(): List<GradleDependency> {
-        return emptyList()
+    fun recommendedAptGradleDependencyList(): Set<GradleDependency> {
+        return emptySet()
     }
 }

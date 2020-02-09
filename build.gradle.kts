@@ -1,5 +1,3 @@
-import java.time.LocalDate.now
-
 plugins {
     // write with kotlin dsl
     `kotlin-dsl`
@@ -24,6 +22,9 @@ dependencies {
     /* Depend on the kotlin plugin, since we want to access it in our plugin */
     api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.50")
 
+    /* adds navigation safeargs dependency to the buildscript */
+    api("androidx.navigation:navigation-safe-args-gradle-plugin:2.2.1")
+
     /* Depend on the default Gradle API's since we want to build a custom plugin */
     implementation(gradleApi())
 
@@ -43,7 +44,7 @@ tasks {
 
 // Needed for group and version generation
 group = "com.lucasbais.android"
-version = "0.0.1"
+version = "0.1.0"
 
 val bintrayUser: String? = System.getenv("BINTRAY_USER")
 val bintrayApiKey: String? = System.getenv("BINTRAY_API_KEY")

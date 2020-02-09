@@ -1,11 +1,13 @@
 package com.lucasbais.android.toolbox
 
 data class GradleDependency(
-    val packageName: String,
-    val name: String,
-    val version: String
+        val group: String,
+        val name: String,
+        val version: String,
+        val description: String? = null,
+        val repository: String? = null
 ) {
     override fun toString(): String {
-        return "$packageName:$name:$version"
+        return "$group:$name:$version"
     }
 }
