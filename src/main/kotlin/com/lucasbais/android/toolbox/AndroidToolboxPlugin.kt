@@ -2,17 +2,18 @@ package com.lucasbais.android.toolbox
 
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
-
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.google.gson.stream.JsonReader
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.lang.IllegalStateException
+import java.io.InputStreamReader
 
 class AndroidToolboxPlugin : Plugin<Project> {
 
@@ -25,10 +26,10 @@ class AndroidToolboxPlugin : Plugin<Project> {
         }
 
         val recommendedExtension: AndroidToolboxExtension =
-            project.extensions.create(
-                    androidToolboxExtension,
-                AndroidToolboxExtension::class.java
-            )
+                project.extensions.create(
+                        androidToolboxExtension,
+                        AndroidToolboxExtension::class.java
+                )
 
         configurePlugins(recommendedExtension)
 
@@ -80,14 +81,12 @@ class AndroidToolboxPlugin : Plugin<Project> {
     }
 
     private fun DependencyHandler.default() {
-        recommended(RecommendedAndroidDependencies.UI)
-        recommended(RecommendedAndroidDependencies.LANGUAGE)
-        recommended(RecommendedAndroidDependencies.DATABASE)
-        recommended(RecommendedAndroidDependencies.DI)
-        recommended(RecommendedAndroidDependencies.IMAGES)
-        recommended(RecommendedAndroidDependencies.ARCHITECTURE)
-        recommended(RecommendedAndroidDependencies.NETWORK)
-        recommended(RecommendedAndroidDependencies.LOGS)
+        JsonReader(InputStreamReader(AndroidToolboxPlugin::class.java.getResourceAsStream("/default.json"))).use {
+            val dependencies: List<DependencyCategory> = Gson().fromJson(it, object : TypeToken<List<DependencyCategory>>() {}.type)
+            dependencies.forEach { dep ->
+                recommended(dep)
+            }
+        }
     }
 }
 
@@ -95,42 +94,42 @@ internal fun <T : BaseExtension> Project.configureAndroid(
         ext: AndroidToolboxExtension,
         javaClass: Class<T>
 ) =
-    extensions.getByType(javaClass).run {
-        compileSdkVersion(ext.apiLevelVersion)
-        defaultConfig {
-            minSdkVersion(ext.minApiVersion)
-            targetSdkVersion(ext.apiTargetVersion)
-            versionCode = ext.versionCode
-            versionName = ext.versionName
-            testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
-            consumerProguardFiles("consumer-rules.pro")
-        }
-
-        tasks.withType<KotlinCompile> {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
-
-        compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
-        }
-
-        buildTypes {
-            getByName("release") {
-                isMinifyEnabled = true
-                isTestCoverageEnabled = false
-                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        extensions.getByType(javaClass).run {
+            compileSdkVersion(ext.apiLevelVersion)
+            defaultConfig {
+                minSdkVersion(ext.minApiVersion)
+                targetSdkVersion(ext.apiTargetVersion)
+                versionCode = ext.versionCode
+                versionName = ext.versionName
+                testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+                consumerProguardFiles("consumer-rules.pro")
             }
 
-            getByName("debug") {
-                isTestCoverageEnabled = true
+            tasks.withType<KotlinCompile> {
+                kotlinOptions {
+                    jvmTarget = "1.8"
+                }
+            }
+
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_1_8
+                targetCompatibility = JavaVersion.VERSION_1_8
+            }
+
+            buildTypes {
+                getByName("release") {
+                    isMinifyEnabled = true
+                    isTestCoverageEnabled = false
+                    proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+                }
+
+                getByName("debug") {
+                    isTestCoverageEnabled = true
+                }
+            }
+
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_1_8
+                targetCompatibility = JavaVersion.VERSION_1_8
             }
         }
-
-        compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
-        }
-    }

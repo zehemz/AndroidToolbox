@@ -3,6 +3,7 @@ plugins {
     `kotlin-dsl`
     // publish plugins
     `maven-publish`
+    //`java-gradle-plugin`
     id("com.jfrog.bintray") version "1.8.4"
 }
 
@@ -17,13 +18,16 @@ kotlinDslPluginOptions {
 
 dependencies {
     /* Depend on the android gradle plugin, since we want to access it in our plugin */
-    api("com.android.tools.build:gradle:3.5.1")
+    api("com.android.tools.build:gradle:3.5.2")
 
     /* Depend on the kotlin plugin, since we want to access it in our plugin */
-    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.50")
+    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
 
     /* adds navigation safeargs dependency to the buildscript */
     api("androidx.navigation:navigation-safe-args-gradle-plugin:2.2.1")
+
+    /* used to read / write json format */
+    implementation("com.google.code.gson:gson:2.8.6")
 
     /* Depend on the default Gradle API's since we want to build a custom plugin */
     implementation(gradleApi())
@@ -41,10 +45,9 @@ tasks {
 
 
 //////////// Deploy section ////////////////////////////////////
-
 // Needed for group and version generation
 group = "com.lucasbais.android"
-version = "0.1.0"
+version = "0.2.0"
 
 val bintrayUser: String? = System.getenv("BINTRAY_USER")
 val bintrayApiKey: String? = System.getenv("BINTRAY_API_KEY")
