@@ -18,7 +18,7 @@ kotlinDslPluginOptions {
 
 dependencies {
     /* Depend on the android gradle plugin, since we want to access it in our plugin */
-    api("com.android.tools.build:gradle:3.5.2")
+    api("com.android.tools.build:gradle:4.0.1")
 
     /* Depend on the kotlin plugin, since we want to access it in our plugin */
     api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
@@ -47,7 +47,7 @@ tasks {
 //////////// Deploy section ////////////////////////////////////
 // Needed for group and version generation
 group = "com.lucasbais.android"
-version = "0.3.0"
+version = "0.3.1"
 
 val bintrayUser: String? = System.getenv("BINTRAY_USER")
 val bintrayApiKey: String? = System.getenv("BINTRAY_API_KEY")
