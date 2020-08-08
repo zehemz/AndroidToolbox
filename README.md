@@ -30,3 +30,8 @@ subprojects {
     apply(plugin = "com.lucasbais.android.toolbox")
 }
 ```
+
+## Upgrade instructions
+
+- Edit `Dependencies.kt` file (version bump)
+- Edit `build.gradle.kts` file (version bump)

@@ -47,7 +47,7 @@ tasks {
 //////////// Deploy section ////////////////////////////////////
 // Needed for group and version generation
 group = "com.lucasbais.android"
-version = "0.2.0"
+version = "0.3.0"
 
 val bintrayUser: String? = System.getenv("BINTRAY_USER")
 val bintrayApiKey: String? = System.getenv("BINTRAY_API_KEY")
